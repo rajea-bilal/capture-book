@@ -5,6 +5,8 @@ import { Authenticated, Unauthenticated, useMutation, useQuery } from "convex/re
 import { Content } from "next/font/google";
 import Image from "next/image";
 import { api } from "../../convex/_generated/api";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function Home() {
 
@@ -15,21 +17,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-         <Unauthenticated>
-            <SignInButton />
-          </Unauthenticated>
-
-          <Authenticated>
-            <UserButton />
-
-            <button className="border p-4" onClick={() => {
-              createDocument({ title: 'hello world '})
-            }}>Click me</button>
-
-            { documents?.map(document => (
-              <div key={document._id} className="border">{document.title}</div>
-            ))}
-          </Authenticated>
+      
     </main>
   );
 }
