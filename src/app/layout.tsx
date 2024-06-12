@@ -13,6 +13,9 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "CaptureBook",
   description: "Effortlessly store, organize, and search your notes and screenshots with advanced vector search capabilities.",
+  icons: {
+    icon: '/book-open-logo.png'
+  }
 };
 
 export default function RootLayout({

@@ -1,11 +1,9 @@
-"use client"
 
-import { SignInButton, UserButton } from '@clerk/nextjs'
-import { Authenticated, Unauthenticated } from 'convex/react'
+
 import React from 'react'
 import { ModeToggle } from './ui/mode-toggle'
 import Image from 'next/image'
-import { Button } from './ui/button'
+import HeaderActions from './header-actions'
 
 const Header = () => {
   return (
@@ -16,18 +14,9 @@ const Header = () => {
           CaptureBook
         </div>
 
-        <div className="border flex gap-6">
-         <Unauthenticated>
-          <Button>
-            <SignInButton />
-          </Button>
-            
-          </Unauthenticated>
-
-          <Authenticated>
-             <ModeToggle />
-            <UserButton />
-          </Authenticated>
+        <div className="border flex gap-6 items-center font-semibold">
+          <ModeToggle />
+          <HeaderActions />
         </div>
       </nav>
     </header>
