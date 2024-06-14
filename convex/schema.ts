@@ -7,7 +7,8 @@ export default defineSchema({
     // defineTable function defines what the table will look like
     // the table will have two columns as listed below
     title: v.string(),
-    tokenIdentifier: v.string()
+    tokenIdentifier: v.string(),
+    fileId: v.id("_storage"),
   }).index('by_tokenIdentifier', ['tokenIdentifier'])
 });
 

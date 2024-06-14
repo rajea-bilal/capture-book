@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import UploadDocumentForm from "./upload-document-form";
 import { useState } from 'react'
+import { Upload } from "lucide-react";
 
 
 
@@ -29,8 +30,8 @@ export default function CreateDocumentButton() {
     <>
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
-        <Button>
-          Upload Documents
+        <Button  className="flex gap-2 items-center">
+          <Upload className="w-4 h-4" /> Upload Document
         </Button>
       </DialogTrigger>
 
