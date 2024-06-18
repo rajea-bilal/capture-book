@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { PageCard } from "@/components/page-card";
 import { Id } from "../../../../convex/_generated/dataModel";
+import ChatPanel from "./chat-panel";
 
 
 
@@ -34,7 +35,7 @@ export default function DocumentPage({ params } : { params : { documentId: Id<"d
           { document.documentUrl && <iframe src={document.documentUrl} className="w-full h-full"/> }
         </div>
 
-        <div className="w-[300px] bg-gray-800 rounded"></div>
+        <ChatPanel documentId={document._id} />
       </div>
     </main>
   );
