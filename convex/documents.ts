@@ -1,15 +1,11 @@
 import { action, mutation, query } from './_generated/server'
 import { ConvexError, v } from "convex/values"
-import { api } from '../convex/_generated/api'
+import { api, internal } from '../convex/_generated/api'
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is the default and can be omitted
 });
-
-
-
-
 
 
 // all the functions relating to querying the convex db
@@ -94,9 +90,7 @@ export const createDocument = mutation({
   }
 })
 
-
 // we use actions to contact a third-party library 
-// 
 export const askQuestion = action({
   args: {
     question: v.string(),
@@ -106,52 +100,73 @@ export const askQuestion = action({
   async handler(ctx, args) {
 
     const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
+      if(!userId) {
+        throw new ConvexError('Not authenticated')
+      }
 
-    console.log(args.question)
+      //get the document
+      const document = await ctx.runQuery(api.documents.getDocument, {
+        documentId: args.documentId
+      })
 
-    if(!userId) {
-      throw new ConvexError('Not authenticated')
-    }
-    //get the document
-    const document = await ctx.runQuery(api.documents.getDocument, {
-      documentId: args.documentId
-    })
-
-    if(!document) {
-      throw new ConvexError("Document not found")
-    }
+      if(!document) {
+        throw new ConvexError("Document not found")
+      }
    
-    const file = await ctx.storage.get(document.fileId)
+      const file = await ctx.storage.get(document.fileId)
 
-    if(!file) {
-      throw new ConvexError("File not found")
-    }
+      if(!file) {
+        throw new ConvexError("File not found")
+      }
   
+      // uploaded file
       const text = await file.text()
-  
-  
-      const chatCompletion: OpenAI.Chat.Completions.ChatCompletion = await openai.chat.completions.create({
-        messages: [
+      // user's question
+      const question = args.question
+    
+      const chatCompletion: OpenAI.Chat.Completions.ChatCompletion = 
+      await openai.chat.completions.create({
+         messages: [
           { 
             role: 'system', 
             content: `Here is a text file: ${text}`
-          }, 
+          },
           {
-            role: "user", 
-            content: `please answer this question: ${args.question}`
+            role: 'user',
+            content: `please answer this question ${args.question}`
           }
         ],
         model: 'gpt-3.5-turbo',
       });
-  
-      const response = chatCompletion.choices[0].message.content
-      console.log(response)
-      return response
+      
+
+        const response = chatCompletion.choices[0].message.content ?? 'could not generate a response'
+        console.log(response)
+        // return { response, question}
+
+      // TODO: store user prompt as a chat record
+        await ctx.runMutation(internal.chats.createChatRecord, {
+          documentId: args.documentId,
+          text: question,
+          isHuman: true,
+          tokenIdentifier: userId
+        })
+
+      //  store the AI response as a chat record
+         await ctx.runMutation(internal.chats.createChatRecord, {
+          documentId: args.documentId,
+          text: response, 
+          isHuman: false,
+          tokenIdentifier: userId
+        })
+
+        return response
      
     },
+  })
+
     
   
-  })
 
 
   
