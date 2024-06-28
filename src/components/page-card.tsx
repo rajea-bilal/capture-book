@@ -10,6 +10,7 @@ import { Doc } from "../../convex/_generated/dataModel"
 import { Button } from "./ui/button"
 import { Eye } from "lucide-react"
 import Link from "next/link"
+import { Loader2 } from "lucide-react";
 
 
 
@@ -24,7 +25,10 @@ export function PageCard({ document }: {document: Doc<"documents"> }) {
         </CardHeader>
 
         <CardContent>
-          <p>Card Content</p>
+         <p>{!document.description ? (<div className="flex justify-center"><Loader2 className="animate-spin"/></div>) : 
+         (document.description)}</p>
+          
+         
         </CardContent>
 
         <CardFooter>

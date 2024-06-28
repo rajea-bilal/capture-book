@@ -27,37 +27,49 @@ export default function DocumentPage({ params } : { params : { documentId: Id<"d
   return (
     <main className="border p-24">
 
-      <div className="border flex justify-between">
-        <h1 className="text-3xl font-semibold mb-10">{document.title}</h1>
-      </div>
-      {/* {document.documentUrl} */}
+      {/* if document is undefined then show loading */}
+      {!document && <div>Loading...</div>}
 
-      <div className="flex gap-12 mt-6">
-        <Tabs defaultValue="account" className="border w-full">
-          <TabsList className="mb-4">
-          <TabsTrigger value="document">Document</TabsTrigger>
-          <TabsTrigger value="chat">Chat</TabsTrigger>
-          </TabsList>
+      {/* if document is true then show the document */}
+      {document && (
+        
+        <>
+          <div className="border flex justify-between">
+            <h1 className="text-3xl font-semibold mb-10">{document.title}</h1>
+          </div>
 
-          <TabsContent value="document">
-            {/* uploaded document view box */}
-            <div className="bg-gray-800 p-4 rounded-xl flex-1 h-[400px]">
-            { document.documentUrl && <iframe src={document.documentUrl} className="w-full h-full"/> }
-            </div>
-          </TabsContent>
+          <div className="flex gap-12 mt-6">
+            <Tabs defaultValue="account" className="border w-full">
+              <TabsList className="mb-4">
+              <TabsTrigger value="document" className="mr-5">Document</TabsTrigger>
+              <TabsTrigger value="chat">Chat</TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="chat" className="w-full border">
-            {/* chat */}
-            <ChatPanel documentId={document._id} />
-          </TabsContent>
+              <TabsContent value="document">
+                {/* uploaded document view box */}
+                <div className="bg-gray-800 p-4 rounded-xl flex-1 h-[400px]">
+                { document.documentUrl && <iframe src={document.documentUrl} className="w-full h-full"/> }
+                </div>
+              </TabsContent>
 
-        </Tabs>
-          
-      </div>
-    </main>
-  );
+              <TabsContent value="chat" className="w-full border">
+                {/* chat */}
+                <ChatPanel documentId={document._id} />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </>
+      )
+    }
 
+  </main>
+  );  
 }
+  
+          
+      
+
+      
 
        
     

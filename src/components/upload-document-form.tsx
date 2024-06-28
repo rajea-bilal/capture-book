@@ -53,18 +53,24 @@ export default function UploadDocumentForm({ onUpload } : { onUpload : () => voi
     const url = await generateUploadUrl()
     console.log(url)
 
+    // uploading the file to the url generated above - sending the file to the db
      const result = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": values.file.type },
         body: values.file,
     });
 
-    const { storageId } = await result.json()
+    // The ID returned from the server after uploading the file. It's assumed to be a unique identifier for the uploaded file.
+    const response = await result.json();
+    const storageId = response.storageId;
 
+    // Adds a new document record in the database with the title and file ID.
+    //a type indicating that the fileId should be an ID referencing a storage object 
     await createDocument({
       title: values.title,
       fileId: storageId as Id<"_storage">,
     })
+    // Calls the onUpload function to possibly close the form or update the UI.
     onUpload()
     // console.log(values)
     
@@ -93,6 +99,7 @@ export default function UploadDocumentForm({ onUpload } : { onUpload : () => voi
         <FormField
           control={form.control}
           name="file"
+          //defines how this field should be rendered.
           render={({ field : { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>File</FormLabel>
@@ -113,7 +120,8 @@ export default function UploadDocumentForm({ onUpload } : { onUpload : () => voi
         />
         <LoadingButton 
         isLoading={form.formState.isSubmitting}
-        />
+        loadingText="Uploading"
+        >Upload</LoadingButton>
       </form>
     </Form>
 );
