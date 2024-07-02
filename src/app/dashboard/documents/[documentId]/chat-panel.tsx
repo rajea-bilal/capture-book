@@ -2,9 +2,9 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAction, useMutation, useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { PageCard } from "@/components/page-card";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
+import { PageCard } from "@/app/dashboard/documents/page-card";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

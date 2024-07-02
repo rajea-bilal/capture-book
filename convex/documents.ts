@@ -161,8 +161,6 @@ export const updateDocumentDescription = internalMutation({
 })
 
 
-
-
 // we use actions to contact a third-party library 
 export const askQuestion = action({
   args: {
@@ -237,6 +235,33 @@ export const askQuestion = action({
      
     },
   })
+
+
+  // Delete Document
+  export const deleteDocument = mutation({
+  args: {
+    documentId: v.id('documents'),
+    fileId: v.id("_storage")
+  },
+  async handler(ctx, args) {
+
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier
+    console.log(userId)
+
+    if(!userId) {
+      throw new ConvexError('Not authenticated')
+    }
+    
+      // deleting the file stored in convex storage
+      await ctx.storage.delete(args.fileId);
+
+      // deleting the document
+      await ctx.db.delete(args.documentId)
+
+   
+  }
+})
+
 
     
   

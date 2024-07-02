@@ -6,33 +6,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Doc } from "../../convex/_generated/dataModel"
-import { Button } from "./ui/button"
+import { Doc } from "../../../../convex/_generated/dataModel"
+import { Button } from "../../../components/ui/button"
 import { Eye } from "lucide-react"
 import Link from "next/link"
 import { Loader2 } from "lucide-react";
 
 
 
-export function PageCard({ document }: {document: Doc<"documents"> }) {
+export function NoteCard({ note }: {note: Doc<"notes"> }) {
 
-  console.log(document?.title)
+  console.log(note?.text)
   return (
       <Card>
         <CardHeader>
-          <CardTitle>{document?.title}</CardTitle>
+          <CardTitle></CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
 
         <CardContent>
-         <p>{!document.description ? (<div className="flex justify-center"><Loader2 className="animate-spin"/></div>) : 
-         (document.description)}</p>
+         <p>{!note.text ? (<div className="flex justify-center"><Loader2 className="animate-spin"/></div>) : 
+         (note.text)}</p>
           
          
         </CardContent>
 
         <CardFooter>
-           <Link href={`/documents/${document._id}`}>
+           <Link href={`/notes/${note._id}`}>
             <Button variant="secondary" className="flex items-center gap-2 ">
               <Eye className="w-4 h-4" /> View
             </Button>
@@ -42,5 +42,3 @@ export function PageCard({ document }: {document: Doc<"documents"> }) {
 
   )
 }
-
-

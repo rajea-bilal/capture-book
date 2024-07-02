@@ -2,7 +2,7 @@
 
 //a hook for performing mutations (changes) to data from the Convex library.
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import {
   Form,
   FormControl,
@@ -18,8 +18,8 @@ import { z } from "zod"
 //for integrating zod with react-hook-form.
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import LoadingButton from "./loading-button";
-import { Id } from "../../convex/_generated/dataModel";
+import LoadingButton from "../../../components/loading-button";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 
 // Define a schema for the form using zod 

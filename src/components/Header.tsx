@@ -23,7 +23,7 @@ const Header = () => {
           </Link>
 
           <div>
-            <Link href="/" className="hover:text-zinc-500  font-semibold">Documents</Link>
+            <Link href="/dashboard/documents" className="hover:text-zinc-500  font-semibold">Documents</Link>
           </div>
         
         </div>
